@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Simple Shell Cron for systems without cron
+
+
+while true; do
+    # Parse /etc/shcrontab file and generate scripts for each entry
+    for entry in $(cat /etc/pcrontab); do
+        # Extract fields from entry
+        minute=$(echo $entry | awk '{print $1}')
+        hour=$(echo $entry | awk '{print $2}')
+        day=$(echo $entry | awk '{print $3}')
+        month=$(echo $entry | awk '{print $4}')
+
+
+    # Monitor /etc/shcrontab file for changes
+    inotifywait -e modify /etc/pcrontab
+    
+done
