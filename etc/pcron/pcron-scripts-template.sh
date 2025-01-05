@@ -1,13 +1,11 @@
 #!/bin/bash
 verifyTime(){
-    time_s=$(echo $time_now | awk '{print $1}')
-    time_m=$(echo $time_now | awk '{print $2}')
-    time_h=$(echo $time_now | awk '{print $3}')
-    time_d=$(echo $time_now | awk '{print $4}')
-    time_mn=$(echo $time_now | awk '{print $5}')
-    time_w=$(echo $time_now | awk '{print $6}')
-
-    # Verify
+    time_s=$(echo "$time_now" | awk '{print $1}')
+    time_m=$(echo "$time_now" | awk '{print $2}')
+    time_h=$(echo "$time_now" | awk '{print $3}')
+    time_d=$(echo "$time_now" | awk '{print $4}')
+    time_mn=$(echo "$time_now" | awk '{print $5}')
+    time_w=$(echo "$time_now" | awk '{print $6}')
 
     if [ -n "$seconds" ]; then
         found=0

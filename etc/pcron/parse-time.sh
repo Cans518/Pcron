@@ -42,7 +42,7 @@ else
                 exit 1
             fi
             # Extract separator and values
-            sep="${tm:$i+2}"
+            sep="${_tm_input_arr[$i+2]}"
             # Generate values: 0*sep sep 2*sep ...
             count=$(expr "$tm_max" / "$sep")
             # Days and months are beginning from 1
