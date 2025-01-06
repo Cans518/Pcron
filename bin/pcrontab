@@ -1,4 +1,5 @@
 #!/bin/bash
+ROOT="/"
 
 # Parse arguments
 while getopts ":u:lerh:" opt; do
@@ -44,12 +45,12 @@ if [ "$name" != "root" ]; then
     # Check if user in /etc/pcron.allow or /etc/pcron.deny
     # Priority of whitelist > blacklist
     if [ -f /etc/pcron.allow ]; then
-        if ! grep -q "$name" /etc/pcron.allow; then
+        if ! grep -q "$name" "$ROOT/etc/pcron.allow"; then
             echo "User $name is not allowed to run pcrontab"
             exit 1
         fi
     elif [ -f /etc/pcron.deny ]; then
-        if grep -q "$name" /etc/pcron.deny; then
+        if grep -q "$name" "$ROOT/etc/pcron.deny"; then
             echo "User $name is not allowed to run pcrontab"
             exit 1
         fi
@@ -58,15 +59,15 @@ fi
 
 # Select file
 if [ "$name" == "root" ] && [ -z "$inputName" ]; then
-    filename=/etc/pcrontab
+    filename="$ROOT/etc/pcrontab"
     inputName="root"
 else
-    filename=/etc/pcron/pcrontab/"$inputName"
+    filename="$ROOT/etc/pcron/pcrontab/$inputName"
 fi
 if [ ! -f "$filename" ]; then
     # Create from template
     echo "File $filename does not exist, creating from template"
-    cp ../etc/pcron/pcrontab.template "$filename"
+    cp $ROOT/etc/pcron/pcrontab.template "$filename"
 fi
 
 list_pcrontab() {

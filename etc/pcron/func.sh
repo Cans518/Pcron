@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Sysroot base
+ROOT="/"
+
 # Print log
-logfile="../var/log/pcron.log"
+logfile="$ROOT/var/log/pcron.log"
 log() {
     # [date] script_name: message
     echo "\[$(date -Iseconds):\] $1: $2 " >> "$logfile"
