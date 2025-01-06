@@ -1,5 +1,16 @@
 #!/bin/bash
+
+# Print log
+logfile="../var/log/pcron.log"
+log() {
+    # [date] script_name: message
+    echo "\[$(date -Iseconds):\] $1: $2 " >> "$logfile"
+}
+
+# Verify time to execute
+
 verifyTime(){
+    time_now=$(date +"%-S %-M %-H %-d %-m %-w")
     time_s=$(echo "$time_now" | awk '{print $1}')
     time_m=$(echo "$time_now" | awk '{print $2}')
     time_h=$(echo "$time_now" | awk '{print $3}')
@@ -85,11 +96,3 @@ verifyTime(){
         fi
     fi
 }
-
-time_now=$(date +"%-S %-M %-H %-d %-m %-w")
-time_now_log=$(date -Iseconds)
-verifyTime
-
-# Run command
-echo "$time_now_log: $command" >> "$logfile"
-eval "$command"

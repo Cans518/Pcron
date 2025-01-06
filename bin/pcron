@@ -2,190 +2,206 @@
 
 # Simple Shell Cron for systems without cron
 set -f
-logfile="../var/log/pcron.log"
-
-warn() {
-    echo "$@" >&2
-}
-
+#shellcheck source=../etc/pcron/func.sh
+source ../etc/pcron/func.sh
 # Thread 1: Run scripts
-run() {
+run_scripts() {
     while true; do
         run-parts --new-session ../etc/pcron/scripts
         sleep 1
     done
 }
-run&
+run_scripts&
 
-# Thread 2: Listen for pcrontab changes and regenerate scripts
-while true; do
-    pcrontab_env=()
-    pcrontab_env_count=0
-    pcron_script_count=0
-    # Parse /etc/pcron/pcrontab file and generate scripts for each entry
-    username="root"
-    while IFS= read -r entry; do
-        # Ignore comments and empty lines
-        if [[ $entry == \#* ]] || [ -z "$entry" ]; then
-            continue
+# Thread 2+: Listen for pcrontab changes and regenerate scripts
+parse_pcrontab() {
+    input_file="$1"
+    username="$2"
+    while true; do
+        # Check if file exists
+        if [ ! -f "$input_file" ]; then
+            log "parser" "File $input_file does not exist"
+            exit 1
         fi
-        echo "Parsing entry: $entry" >> "$logfile"
-        # If line starts with capital letter, assume it's a environment variable and add it to the generated script
-        if [[ $entry == [A-Z]* ]]; then
-            pcrontab_env[pcrontab_env_count]="$entry"
-            pcrontab_env_count=$((pcrontab_env_count + 1))
-            echo "Added environment variable: $entry" >> "$logfile"
-            continue
-        fi
-        # If line matches "[username], set username and continue to next line
-        if [[ $entry =~ ^\[(.*)\]$ ]]; then
-            username="${BASH_REMATCH[1]}"
-            echo "Set username: $username" >> "$logfile"
-            continue
-        fi
-        # Extract fields from entry
-        seconds=$(echo "$entry" | awk '{print $1}')
-        minute=$(echo "$entry" | awk '{print $2}')
-        hour=$(echo "$entry" | awk '{print $3}')
-        day=$(echo "$entry" | awk '{print $4}')
-        month=$(echo "$entry" | awk '{print $5}')
-        weekday=$(echo "$entry" | awk '{print $6}')
-        command=$(echo "$entry" | cut -d' ' -f7-)
+        pcrontab_env=()
+        pcrontab_env_count=0
+        pcron_script_count=0
+        # Parse input file and generate scripts for each entry
+        while IFS= read -r entry; do
+            # Ignore comments and empty lines
+            if [[ $entry == \#* ]] || [ -z "$entry" ]; then
+                continue
+            fi
+            log "parser" "Parsing entry: $entry"
+            # If line starts with capital letter, assume it's a environment variable and add it to the generated script
+            if [[ $entry == [A-Z]* ]]; then
+                pcrontab_env[pcrontab_env_count]="$entry"
+                pcrontab_env_count=$((pcrontab_env_count + 1))
+                log "parser" "Added environment variable: $entry"
+                continue
+            fi
+            # Extract fields from entry
+            seconds=$(echo "$entry" | awk '{print $1}')
+            minute=$(echo "$entry" | awk '{print $2}')
+            hour=$(echo "$entry" | awk '{print $3}')
+            day=$(echo "$entry" | awk '{print $4}')
+            month=$(echo "$entry" | awk '{print $5}')
+            weekday=$(echo "$entry" | awk '{print $6}')
+            command=$(echo "$entry" | cut -d' ' -f7-)
 
-        # Parse and verify time
-        if [ -z "$seconds" ] || [ -z "$minute" ] || [ -z "$hour" ] || [ -z "$day" ] || [ -z "$month" ] || [ -z "$weekday" ] || [ -z "$command" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        fi
-        # Parse seconds
-        retval=$(../etc/pcron/parse-time.sh "$seconds" 3)
-        if [ "$retval" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            seconds_arr=()
-        else
-            seconds_arr=("$retval")
-        fi
+            # Parse and verify time
+            if [ -z "$seconds" ] || [ -z "$minute" ] || [ -z "$hour" ] || [ -z "$day" ] || [ -z "$month" ] || [ -z "$weekday" ] || [ -z "$command" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            fi
+            # Parse seconds
+            retval=$(../etc/pcron/parse-time.sh "$seconds" 3)
+            if [ "$retval" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                seconds_arr=()
+            else
+                seconds_arr=("$retval")
+            fi
 
-        # Parse minutes
-        retval=$(../etc/pcron/parse-time.sh "$minute" 59)
-        if [ "$retval" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            minutes_arr=()
-        else
-            minutes_arr=("$retval")
-        fi
+            # Parse minutes
+            retval=$(../etc/pcron/parse-time.sh "$minute" 59)
+            if [ "$retval" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                minutes_arr=()
+            else
+                minutes_arr=("$retval")
+            fi
 
-        # Parse hours
-        retval=$(../etc/pcron/parse-time.sh "$hour" 23)
-        if [ "$retval" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            hours_arr=()
-        else
-            hours_arr=("$retval")
-        fi
+            # Parse hours
+            retval=$(../etc/pcron/parse-time.sh "$hour" 23)
+            if [ "$retval" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                hours_arr=()
+            else
+                hours_arr=("$retval")
+            fi
 
-        # Parse days
-        retval=$(../etc/pcron/parse-time.sh "$day" 31)
-        if [ "$retval" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            days_arr=()
-        else
-            days_arr=("$retval")
-        fi
+            # Parse days
+            retval=$(../etc/pcron/parse-time.sh "$day" 31)
+            if [ "$retval" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                days_arr=()
+            else
+                days_arr=("$retval")
+            fi
 
-        # Parse months
-        retval=$(../etc/pcron/parse-time.sh "$month" 12)
-        if [ "$retval" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            months_arr=()
-        else
-            months_arr=("$retval")
-        fi
+            # Parse months
+            retval=$(../etc/pcron/parse-time.sh "$month" 12)
+            if [ "$retval" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                months_arr=()
+            else
+                months_arr=("$retval")
+            fi
 
-        # Parse weekdays
-        retval=$(../etc/pcron/parse-time.sh "$weekday" 6)
-        if [ "${retval:0:1}" == "E" ]; then
-            # Invalid entry
-            warn "Invalid entry: $entry"
-            continue
-        elif [ -z "$retval" ]; then
-            # Empty time array
-            weekdays_arr=()
-        else
-            weekdays_arr=("$retval")
-        fi
+            # Parse weekdays
+            retval=$(../etc/pcron/parse-time.sh "$weekday" 6)
+            if [ "${retval:0:1}" == "E" ]; then
+                # Invalid entry
+                log "parser" "Invalid entry: $entry"
+                continue
+            elif [ -z "$retval" ]; then
+                # Empty time array
+                weekdays_arr=()
+            else
+                weekdays_arr=("$retval")
+            fi
 
-        # Generate script for entry
-        script_name=../etc/pcron/scripts/"pcron_script_${pcron_script_count}"
-        # Script header
-        cat > $script_name <<EOF
+            # Generate script for entry
+            script_name=../etc/pcron/scripts/"pcron_${username}_${pcron_script_count}"
+            # Script header
+            cat > "$script_name" <<EOF
 #!/bin/bash
 # Auto generated by pcrontab, DO NOT EDIT
-
+source ../func.sh
 EOF
-        # Environment variables
-        for (( i = 0; i < "${#pcrontab_env[@]}"; i++ )); do
-            echo "export ${pcrontab_env[i]}" >> $script_name
-        done
-        echo "logfile=$logfile" >> $script_name
-        # Time and command
-        if [ "$username" == "root" ]; then
-            echo "command='$command'" >> $script_name
-        elif [ "$username" == "*" ]; then
-            echo "command='sudo -u nobody $command'" >> $script_name
-        else
-            echo "command='sudo -u $username $command'" >> $script_name
-        fi
-        if [ -n "$days_arr" ]; then
-            echo "days=(" "${days_arr[@]}" ")" >> $script_name
-        fi
-        if [ -n "$months_arr" ]; then
-            echo "months=(" "${months_arr[@]}" ")" >> $script_name
-        fi
-        if [ -n "$weekdays_arr" ]; then
-            echo "weekdays=(" "${weekdays_arr[@]}" ")" >> $script_name
-        fi
-        if [ -n "$hours_arr" ]; then
-            echo "hours=(" "${hours_arr[@]}" ")" >> $script_name
-        fi
-        if [ -n "$minutes_arr" ]; then
-            echo "minutes=(" "${minutes_arr[@]}" ")" >> $script_name
-        fi
-        if [ -n "$seconds_arr" ]; then
-            echo "seconds=(" "${seconds_arr[@]}" ")" >> $script_name
-        fi
-        # Script footer
-        cat ../etc/pcron/pcron-scripts-template.sh >> $script_name
-        chmod +x $script_name
-        echo "Generated script for $username: $script_name" >> "$logfile"
+            # Environment variables
+            for (( i = 0; i < "${#pcrontab_env[@]}"; i++ )); do
+                echo "export ${pcrontab_env[i]}" >> "$script_name"
+            done
+            echo "logfile=$logfile" >> "$script_name"
+            # Time and command
+            if [ "$username" == "root" ]; then
+                echo "command='$command'" >> "$script_name"
+            else
+                echo "command='sudo -u $username $command'" >> "$script_name"
+            fi
+            if [ -n "$days_arr" ]; then
+                echo "days=(" "${days_arr[@]}" ")" >> "$script_name"
+            fi
+            if [ -n "$months_arr" ]; then
+                echo "months=(" "${months_arr[@]}" ")" >> "$script_name"
+            fi
+            if [ -n "$weekdays_arr" ]; then
+                echo "weekdays=(" "${weekdays_arr[@]}" ")" >> "$script_name"
+            fi
+            if [ -n "$hours_arr" ]; then
+                echo "hours=(" "${hours_arr[@]}" ")" >> "$script_name"
+            fi
+            if [ -n "$minutes_arr" ]; then
+                echo "minutes=(" "${minutes_arr[@]}" ")" >> "$script_name"
+            fi
+            if [ -n "$seconds_arr" ]; then
+                echo "seconds=(" "${seconds_arr[@]}" ")" >> "$script_name"
+            fi
+            # Script footer
+            cat >> "$script_name" <<EOF
+verifyTime
 
-        pcron_script_count=$((pcron_script_count+1))
-    done < ../etc/pcron/pcrontab
+# Run command
+log "runner" "Running command: $command"
+eval "$command"
+EOF
+            chmod +x "$script_name"
+            log "parser" "Generated script for $username: $script_name"
+
+            pcron_script_count=$((pcron_script_count+1))
+        done < "$input_file"
 
 
-    # Monitor /etc/pcron/pcrontab file for changes
-    inotifywait -e modify ../etc/pcron/pcrontab
-    echo "Re-parsing /etc/pcron/pcrontab file" >> "$logfile"
-    
+        # Monitor /etc/pcron/pcrontab file for changes
+        inotifywait -e modify "$input_file"
+        log "parser" "Re-parsing /etc/pcron/pcrontab file"
+        
+    done
+}
+
+# Thread 3: Create threads to run parsers
+# File to parse: 
+# 1. /etc/pcrontab - root
+# 2. /etc/pcron/pcrontab/<username> - user
+
+while true; do
+    parse_pcrontab "/etc/pcrontab" root &
+    for filename in /etc/pcron/pcrontab/*; do
+        username=$(basename "$filename")
+        parse_pcrontab "$filename" "$username" &
+    done
+    inotifywait -e modify "/etc/pcron/pcrontab"
 done

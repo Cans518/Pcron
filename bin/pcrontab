@@ -1,19 +1,22 @@
 #!/bin/bash
 
 # Parse arguments
-while getopts ":u:ler:" opt; do
+while getopts ":u:lerh:" opt; do
     case $opt in
     u)
         inputName=$OPTARG
         ;;
     l)
-        list=1
+        task="list"
         ;;
     e)
-        edit=1
+        task="edit"
         ;;
     r)
-        remove=1
+        task="remove"
+        ;;
+    h)
+        task="help"
         ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
@@ -31,7 +34,7 @@ name=$(/usr/bin/whoami)
 
 if [ "$name" != "root" ]; then
     if [ -z "$inputName" ]; then
-        echo "You must be root to run this script"
+        echo "You must be root to run this script or specify a username by '-u'"
         exit 1
     elif [ "$name" != "$inputName" ]; then
         echo "Username does not match"
@@ -39,6 +42,7 @@ if [ "$name" != "root" ]; then
     fi
 
     # Check if user in /etc/pcron.allow or /etc/pcron.deny
+    # Priority of whitelist > blacklist
     if [ -f /etc/pcron.allow ]; then
         if ! grep -q "$name" /etc/pcron.allow; then
             echo "User $name is not allowed to run pcrontab"
@@ -52,3 +56,85 @@ if [ "$name" != "root" ]; then
     fi
 fi
 
+# Select file
+if [ "$name" == "root" ] && [ -z "$inputName" ]; then
+    filename=/etc/pcrontab
+    inputName="root"
+else
+    filename=/etc/pcron/pcrontab/"$inputName"
+fi
+if [ ! -f "$filename" ]; then
+    # Create from template
+    echo "File $filename does not exist, creating from template"
+    cp ../etc/pcron/pcrontab.template "$filename"
+fi
+
+list_pcrontab() {
+    echo "List pcrontab of user $inputName:"
+    while IFS= read -r entry; do
+        # Ignore comments, environment variables and empty lines
+        if [[ $entry == \#* ]] || [[ $entry == [A-Z]* ]] || [ -z "$entry" ]; then
+            continue
+        fi
+        printf "%s\n" "$entry" # Use printf to print '*' correctly
+    done < "$filename"
+}
+
+edit_pcrontab() {
+    # Make a temp file and edit it
+    tempFile=$(mktemp)
+    cp "$filename" "$tempFile"
+    # Find an editor
+    if test -x /usr/bin/editor; then
+        editor=/usr/bin/editor
+    elif test -x /usr/bin/vi; then
+        editor=/usr/bin/vi
+    elif test -x /usr/bin/nano; then
+        editor=/usr/bin/nano
+    else
+        echo "No editor found"
+        echo "You can edit the file manually: $filename and it will be reloaded after saving automatically"
+        exit 1
+    fi
+    $editor "$tempFile"
+    # Replace if different
+    if ! cmp -s "$tempFile" "$filename"; then
+        cp "$tempFile" "$filename"
+    fi
+}
+
+remove_pcrontab() {
+    echo "Remove pcrontab: $filename"
+    rm "$filename"
+}
+
+help() {
+    echo "Usage: pcrontab <-u username> [-l | -e | -r]"
+    echo "Options:"
+    echo "  -u username  Specify username (or system-wide (root) if not set)"
+    echo "  -l           List pcrontab"
+    echo "  -e           Edit pcrontab"
+    echo "  -r           Remove pcrontab"
+    echo "  -h           Show this help message"
+    exit 0
+}
+
+# Start processing
+case "$task" in
+    list)
+        list_pcrontab
+        ;;
+    edit)
+        edit_pcrontab
+        ;;
+    remove)
+        remove_pcrontab
+        ;;
+    help)
+        help
+        ;;
+    *)
+        echo "Invalid task: $task"
+        exit 1
+        ;;
+esac
