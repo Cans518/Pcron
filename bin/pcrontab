@@ -2,7 +2,7 @@
 ROOT=""
 
 # Parse arguments
-while getopts ":u:lerh:" opt; do
+while getopts ":u:lerh" opt; do
     case $opt in
     u)
         inputName=$OPTARG
@@ -101,6 +101,9 @@ edit_pcrontab() {
     # Replace if different
     if ! cmp -s "$tempFile" "$filename"; then
         cp "$tempFile" "$filename"
+        echo "File $filename has been updated"
+    else
+        echo "File $filename has not been changed"
     fi
     rm "$tempFile"
 }
