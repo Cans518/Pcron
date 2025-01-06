@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT="/"
+ROOT=""
 
 # Simple Shell Cron for systems without cron
 set -f
@@ -200,7 +200,7 @@ EOF
 # 2. /etc/pcron/pcrontab/<username> - user
 
 parse_pcrontab "$ROOT/etc/pcrontab" root &
-for filename in $ROOT/etc/pcron/pcrontab/*; do
+for filename in "$ROOT/etc/pcron/pcrontab"/*; do
     username=$(basename "$filename")
     parse_pcrontab "$filename" "$username" &
 done

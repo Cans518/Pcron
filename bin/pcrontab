@@ -1,5 +1,5 @@
 #!/bin/bash
-ROOT="/"
+ROOT=""
 
 # Parse arguments
 while getopts ":u:lerh:" opt; do

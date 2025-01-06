@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Sysroot base
-ROOT="/"
+ROOT=""
 
 # Print log
 logfile="$ROOT/var/log/pcron.log"
 log() {
     # [date] script_name: message
-    echo "\[$(date -Iseconds):\] $1: $2 " >> "$logfile"
+    echo "[$(date -Iseconds):] $1: $2 " >> "$logfile"
 }
 
 # Verify time to execute
