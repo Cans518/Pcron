@@ -2,7 +2,6 @@
 
 # Simple Shell Cron for systems without cron
 set -f
-#shellcheck source=../etc/pcron/func.sh
 source ../etc/pcron/func.sh
 # Thread 1: Run scripts
 run_scripts() {
@@ -184,9 +183,9 @@ EOF
         done < "$input_file"
 
 
-        # Monitor /etc/pcron/pcrontab file for changes
+        # Monitor input file for changes
         inotifywait -e modify "$input_file"
-        log "parser" "Re-parsing /etc/pcron/pcrontab file"
+        log "parser" "Re-parsing $input_file file"
         
     done
 }
@@ -197,10 +196,10 @@ EOF
 # 2. /etc/pcron/pcrontab/<username> - user
 
 while true; do
-    parse_pcrontab "/etc/pcrontab" root &
-    for filename in /etc/pcron/pcrontab/*; do
+    parse_pcrontab "../etc/pcrontab" root &
+    for filename in ../etc/pcron/pcrontab/*; do
         username=$(basename "$filename")
         parse_pcrontab "$filename" "$username" &
     done
-    inotifywait -e modify "/etc/pcron/pcrontab"
+    inotifywait -e create "../etc/pcron/pcrontab"
 done
