@@ -107,11 +107,7 @@ checkPID() {
         if pgrep -F "$pidfile" >/dev/null; then
             log "runner" "Command $command: Process is already running"
             exit
-        else
-            echo "PID file exists but process is not running, replacing"
         fi
-    else
-        echo "PID file does not exist"
     fi
     echo "$BASHPID" > "$pidfile"
 }
