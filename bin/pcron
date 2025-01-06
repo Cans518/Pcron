@@ -6,17 +6,8 @@ ROOT=""
 set -f
 #shellcheck source=../etc/pcron/func.sh
 source $ROOT/etc/pcron/func.sh
-# Thread 1: Run scripts
 
-run_scripts() {
-    while true; do
-        run-parts --new-session "$ROOT/etc/pcron/scripts" --arg="$(date +"%-S %-M %-H %-d %-m %-w")"&
-        sleep 1
-    done
-}
-run_scripts&
-
-# Thread 2+: Listen for pcrontab changes and regenerate scripts
+# Threads 1+: Listen for pcrontab changes and regenerate scripts
 parse_pcrontab() {
     input_file="$1"
     username="$2"
@@ -197,23 +188,35 @@ EOF
     done
 }
 
-# Thread 3: Create threads to run parsers
+# Thread 2: Create threads to run parsers
 # File to parse: 
 # 1. /etc/pcrontab - root
 # 2. /etc/pcron/pcrontab/<username> - user
-
-parse_pcrontab "$ROOT/etc/pcrontab" root &
-# Check if the directory exists and not empty
-if [ -d "$ROOT/etc/pcron/pcrontab" ] && [ -n "$(ls -A "$ROOT/etc/pcron/pcrontab")" ]; then
-    for filename in "$ROOT/etc/pcron/pcrontab"/*; do
-        username=$(basename "$filename")
-        parse_pcrontab "$filename" "$username" &
-    done
-fi
-while true; do
-    newfile=$(inotifywait -e create -q "$ROOT/etc/pcron/pcrontab" | awk '{print $1$3}')
-    if test -n "$newfile"; then
-        log "parser" "New file detected: $newfile"
-        parse_pcrontab "$newfile" "$(basename "$newfile")" &
+run_parsers() {
+    parse_pcrontab "$ROOT/etc/pcrontab" root &
+    # Check if the directory exists and not empty
+    if [ -d "$ROOT/etc/pcron/pcrontab" ] && [ -n "$(ls -A "$ROOT/etc/pcron/pcrontab")" ]; then
+        for filename in "$ROOT/etc/pcron/pcrontab"/*; do
+            username=$(basename "$filename")
+            parse_pcrontab "$filename" "$username" &
+        done
     fi
-done
+    while true; do
+        newfile=$(inotifywait -e create -q "$ROOT/etc/pcron/pcrontab" | awk '{print $1$3}')
+        if test -n "$newfile"; then
+            log "parser" "New file detected: $newfile"
+            parse_pcrontab "$newfile" "$(basename "$newfile")" &
+        fi
+    done
+}
+run_parsers&
+
+# Thread 3: Run scripts
+
+run_scripts() {
+    while true; do
+        run-parts --new-session "$ROOT/etc/pcron/scripts" --arg="$(date +"%-S %-M %-H %-d %-m %-w")"&
+        sleep 1
+    done
+}
+run_scripts
