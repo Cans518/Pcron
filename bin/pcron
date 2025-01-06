@@ -173,8 +173,8 @@ EOF
 verifyTime
 
 # Run command
-log "runner" "Running command: $command"
-eval "$command"
+log "runner" "Running command: '\$command'"
+eval "\$command"
 EOF
             chmod +x "$script_name"
             log "parser" "Generated script for $username: $script_name"
@@ -195,11 +195,15 @@ EOF
 # 1. /etc/pcrontab - root
 # 2. /etc/pcron/pcrontab/<username> - user
 
+parse_pcrontab "../etc/pcrontab" root &
+for filename in ../etc/pcron/pcrontab/*; do
+    username=$(basename "$filename")
+    parse_pcrontab "$filename" "$username" &
+done
 while true; do
-    parse_pcrontab "../etc/pcrontab" root &
-    for filename in ../etc/pcron/pcrontab/*; do
-        username=$(basename "$filename")
-        parse_pcrontab "$filename" "$username" &
-    done
-    inotifywait -e create "../etc/pcron/pcrontab"
+    newfile=$(inotifywait -e create -q "../etc/pcron/pcrontab" | awk '{print $1$3}')
+    if test -n "$newfile"; then
+        log "parser" "New file detected: $newfile"
+        parse_pcrontab "$newfile" "$(basename "$newfile")" &
+    fi
 done
