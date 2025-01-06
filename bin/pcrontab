@@ -101,6 +101,7 @@ edit_pcrontab() {
     if ! cmp -s "$tempFile" "$filename"; then
         cp "$tempFile" "$filename"
     fi
+    rm "$tempFile"
 }
 
 remove_pcrontab() {
