@@ -22,6 +22,10 @@ len="${#_tm_input_arr[@]}"
 if [ "$len" -eq 1 ]; then
     if [ "$tm" == "*" ]; then
         # Single * character, match all values, so return nothing
+        # Return "0 15 30 45" for seconds because minimum interval is 15 seconds
+        if [ "$tm_max" -eq 3 ]; then
+            echo "0 15 30 45"
+        fi
         exit 0
     # Check if it's a valid number
     elif ! [[ $tm =~ ^[0-9]+$ ]]; then
