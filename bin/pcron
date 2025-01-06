@@ -203,10 +203,13 @@ EOF
 # 2. /etc/pcron/pcrontab/<username> - user
 
 parse_pcrontab "$ROOT/etc/pcrontab" root &
-for filename in "$ROOT/etc/pcron/pcrontab"/*; do
-    username=$(basename "$filename")
-    parse_pcrontab "$filename" "$username" &
-done
+# Check if the directory exists and not empty
+if [ -d "$ROOT/etc/pcron/pcrontab" ] && [ -n "$(ls -A "$ROOT/etc/pcron/pcrontab")" ]; then
+    for filename in "$ROOT/etc/pcron/pcrontab"/*; do
+        username=$(basename "$filename")
+        parse_pcrontab "$filename" "$username" &
+    done
+fi
 while true; do
     newfile=$(inotifywait -e create -q "$ROOT/etc/pcron/pcrontab" | awk '{print $1$3}')
     if test -n "$newfile"; then
