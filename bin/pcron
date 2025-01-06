@@ -182,7 +182,7 @@ checkPID
 # Run command
 log "runner" "Running command: '\$command'"
 eval "\$command"
-rm $pidfile
+rm "\$pidfile"
 EOF
             chmod +x "$script_name"
             log "parser" "Generated script for $username: $script_name"
