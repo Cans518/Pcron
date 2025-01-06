@@ -145,7 +145,6 @@ EOF
             for (( i = 0; i < "${#pcrontab_env[@]}"; i++ )); do
                 echo "export ${pcrontab_env[i]}" >> "$script_name"
             done
-            echo "logfile=$logfile" >> "$script_name"
             # Time and command
             if [ "$username" == "root" ]; then
                 echo "command='$command'" >> "$script_name"
