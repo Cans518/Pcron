@@ -99,3 +99,20 @@ verifyTime(){
         fi
     fi
 }
+
+checkPID() {
+    # Check for PID file
+    pidfile="${0}.pid"
+    if [ -f "$pidfile" ]; then
+        # Check if process is running
+        if pgrep -F "$pidfile" >/dev/null; then
+            log "runner" "Command $command: Process is already running"
+            exit
+        else
+            echo "PID file exists but process is not running, replacing"
+        fi
+    else
+        echo "PID file does not exist"
+    fi
+    echo "$BASHPID" > "$pidfile"
+}

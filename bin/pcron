@@ -10,7 +10,7 @@ source $ROOT/etc/pcron/func.sh
 
 run_scripts() {
     while true; do
-        run-parts --new-session $ROOT/etc/pcron/scripts
+        run-parts --new-session "$ROOT/etc/pcron/scripts" --arg="$(date +"%-S %-M %-H %-d %-m %-w")"&
         sleep 1
     done
 }
@@ -20,6 +20,8 @@ run_scripts&
 parse_pcrontab() {
     input_file="$1"
     username="$2"
+    # Clean old scripts
+    rm "$ROOT/etc/pcron/scripts/pcron_${username}_"*
     while true; do
         # Check if file exists
         if [ ! -f "$input_file" ]; then
@@ -175,10 +177,11 @@ EOF
             # Script footer
             cat >> "$script_name" <<EOF
 verifyTime
-
+checkPID
 # Run command
 log "runner" "Running command: '\$command'"
 eval "\$command"
+rm ${0}.pid
 EOF
             chmod +x "$script_name"
             log "parser" "Generated script for $username: $script_name"
