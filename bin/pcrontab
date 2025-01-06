@@ -139,7 +139,7 @@ case "$task" in
         help
         ;;
     *)
-        echo "Invalid task: $task"
+        echo "Please specify an opreation. See -h"
         exit 1
         ;;
 esac
