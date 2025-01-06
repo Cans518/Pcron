@@ -102,7 +102,6 @@ verifyTime(){
 
 checkPID() {
     # Check for PID file
-    pidfile="${0}.pid"
     if [ -f "$pidfile" ]; then
         # Check if process is running
         if pgrep -F "$pidfile" >/dev/null; then
