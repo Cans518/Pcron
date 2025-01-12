@@ -1,0 +1,355 @@
+2025-01-05T15:24:00+08:00: echo "cmd1"
+2025-01-05T15:24:15+08:00: echo "cmd1"
+2025-01-05T15:24:30+08:00: echo "cmd1"
+2025-01-05T15:24:45+08:00: echo "cmd1"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+2025-01-05T16:04:00+08:00: echo "cmd1"
+2025-01-05T16:04:15+08:00: echo "cmd1"
+2025-01-05T16:04:30+08:00: echo "cmd1"
+2025-01-05T16:04:30+08:00: echo "cmd2"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+2025-01-05T16:11:00+08:00: 
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+2025-01-05T16:13:30+08:00: echo "cmd2"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: 
+2025-01-05T16:14:30+08:00: echo "cmd2"
+2025-01-05T16:15:30+08:00: echo "cmd2"
+2025-01-05T16:16:30+08:00: echo "cmd2"
+2025-01-05T16:17:30+08:00: echo "cmd2"
+2025-01-05T16:18:30+08:00: echo "cmd2"
+2025-01-05T16:19:30+08:00: echo "cmd2"
+2025-01-05T16:20:15+08:00: echo "cmd1"
+2025-01-05T16:20:30+08:00: echo "cmd1"
+2025-01-05T16:20:30+08:00: echo "cmd2"
+2025-01-05T16:20:45+08:00: echo "cmd1"
+2025-01-05T16:21:00+08:00: echo "cmd1"
+2025-01-05T16:21:15+08:00: echo "cmd1"
+2025-01-05T16:21:30+08:00: echo "cmd1"
+2025-01-05T16:21:30+08:00: echo "cmd2"
+2025-01-05T16:21:45+08:00: echo "cmd1"
+2025-01-05T16:22:15+08:00: echo "cmd1"
+2025-01-05T16:22:30+08:00: echo "cmd1"
+2025-01-05T16:22:30+08:00: echo "cmd2"
+2025-01-05T16:22:45+08:00: echo "cmd1"
+2025-01-05T16:23:00+08:00: echo "cmd1"
+2025-01-05T16:23:15+08:00: echo "cmd1"
+2025-01-05T16:23:30+08:00: echo "cmd1"
+2025-01-05T16:23:30+08:00: echo "cmd2"
+2025-01-05T16:23:45+08:00: echo "cmd1"
+2025-01-05T16:24:00+08:00: echo "cmd1"
+2025-01-05T16:24:15+08:00: echo "cmd1"
+2025-01-05T16:24:30+08:00: echo "cmd1"
+2025-01-05T16:24:30+08:00: echo "cmd2"
+2025-01-05T16:24:45+08:00: echo "cmd1"
+2025-01-05T16:25:00+08:00: echo "cmd1"
+Parsing entry: # /etc/pcrontab: system-wide pcrontab
+Parsing entry: # Unlike any other crontab you don't have to run the `crontab'
+Parsing entry: # command to install the new version when you edit this file
+Parsing entry: # and files in /etc/cron.d. These files also have username fields,
+Parsing entry: # that none of the other crontabs do.
+Parsing entry: # Note: keep the last line empty or you may lost the last entry
+Parsing entry: 
+Parsing entry: SHELL=/bin/bash
+Added environment variable: SHELL=/bin/bash
+Parsing entry: # You can also override PATH, but by default, newer versions inherit it from the environment
+Parsing entry: #PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+Parsing entry: 
+Parsing entry: # Example of job definition:
+Parsing entry: # .------------------- 15 seconds (0 - 3)
+Parsing entry: # |  .---------------- minute (0 - 59)
+Parsing entry: # |  |  .------------- hour (0 - 23)
+Parsing entry: # |  |  |  .---------- day of month (1 - 31)
+Parsing entry: # |  |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr $ROOT.
+Parsing entry: # |  |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+Parsing entry: # |  |  |  |  |  |
+Parsing entry: # *  *  *  *  *  * command to be executed
+Parsing entry: #
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"
+Parsing entry: 2 * * * * * echo "cmd2"
+Parsing entry: */2 * * * * * echo "cmd3"
+2025-01-05T16:25:15+08:00: echo "cmd1"
+2025-01-05T16:25:30+08:00: echo "cmd1"
+2025-01-05T16:25:30+08:00: echo "cmd2"
+2025-01-05T16:25:30+08:00: echo "cmd3"
+2025-01-05T16:26:00+08:00: echo "cmd1"
+2025-01-05T16:26:00+08:00: echo "cmd3"
+2025-01-05T16:26:15+08:00: echo "cmd1"
+2025-01-05T16:26:30+08:00: echo "cmd1"
+2025-01-05T16:26:30+08:00: echo "cmd2"
+2025-01-05T16:26:30+08:00: echo "cmd3"
+Parsing entry: SHELL=/bin/sh
+Added environment variable: SHELL=/bin/sh
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * sots echo "cmd1"; whoami
+Generated script: $ROOT/etc/pcron/scripts/pcron_script_0
+Parsing entry: 2 * * * * * * whoami
+Generated script: $ROOT/etc/pcron/scripts/pcron_script_1
+Parsing entry: */2 * * * * * root echo "cmd3"
+Generated script: $ROOT/etc/pcron/scripts/pcron_script_2
+2025-01-05T16:53:30+08:00: sudo -u nobody whoami
+2025-01-05T16:53:30+08:00: echo "cmd3"
+2025-01-05T16:54:00+08:00: echo "cmd3"
+2025-01-05T16:54:30+08:00: sudo -u nobody whoami
+2025-01-05T16:54:30+08:00: echo "cmd3"
+2025-01-05T16:55:00+08:00: echo "cmd3"
+2025-01-05T16:55:30+08:00: sudo -u nobody whoami
+2025-01-05T16:55:30+08:00: echo "cmd3"
+2025-01-05T16:56:00+08:00: echo "cmd3"
+2025-01-05T16:56:30+08:00: sudo -u nobody whoami
+2025-01-05T16:56:30+08:00: echo "cmd3"
+2025-01-05T16:57:00+08:00: echo "cmd3"
+2025-01-05T16:57:30+08:00: sudo -u nobody whoami
+2025-01-05T16:57:30+08:00: echo "cmd3"
+2025-01-05T16:58:00+08:00: echo "cmd3"
+2025-01-05T16:58:30+08:00: sudo -u nobody whoami
+2025-01-05T16:58:30+08:00: echo "cmd3"
+2025-01-05T16:59:00+08:00: echo "cmd3"
+2025-01-05T16:59:30+08:00: sudo -u nobody whoami
+2025-01-05T16:59:30+08:00: echo "cmd3"
+2025-01-05T17:00:00+08:00: echo "cmd3"
+2025-01-05T17:00:30+08:00: sudo -u nobody whoami
+2025-01-05T17:00:30+08:00: echo "cmd3"
+2025-01-05T17:01:00+08:00: sudo -u sots echo "cmd1"; whoami
+2025-01-05T17:01:00+08:00: echo "cmd3"
+2025-01-05T17:01:15+08:00: sudo -u sots echo "cmd1"; whoami
+Parsing entry: SHELL=/bin/sh
+Added environment variable: SHELL=/bin/sh
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"; whoami
+Generated script for root: $ROOT/etc/pcron/scripts/pcron_script_0
+Parsing entry: [sots]
+Set username: sots
+Parsing entry: 2 * * * * * whoami
+Generated script for sots: $ROOT/etc/pcron/scripts/pcron_script_1
+Parsing entry: */2 * * * * * echo "cmd3"
+Generated script for sots: $ROOT/etc/pcron/scripts/pcron_script_2
+2025-01-05T17:16:00+08:00: sudo -u sots echo "cmd3"
+2025-01-05T17:16:30+08:00: sudo -u sots whoami
+2025-01-05T17:16:30+08:00: sudo -u sots echo "cmd3"
+Parsing entry: SHELL=/bin/sh
+Added environment variable: SHELL=/bin/sh
+Parsing entry: 0-3 1-5:9-11:20-30 * * * * echo "cmd1"; whoami
+Generated script for root: $ROOT/etc/pcron/scripts/pcron_script_0
+Parsing entry: [sots]
+Set username: sots
+Parsing entry: 2 * * * * * whoami
+Generated script for sots: $ROOT/etc/pcron/scripts/pcron_script_1
+Parsing entry: */2 * * * * * echo "cmd3"
+Generated script for sots: $ROOT/etc/pcron/scripts/pcron_script_2
+2025-01-05T17:17:30+08:00: sudo -u sots whoami
+2025-01-05T17:17:30+08:00: sudo -u sots echo "cmd3"
+2025-01-05T17:18:00+08:00: sudo -u sots echo "cmd3"
