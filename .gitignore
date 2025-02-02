@@ -97,7 +97,6 @@
 /docs/_static/
 /docs/_templates/
 *.html
-*.pdf
 *.doc
 *.docx
 *.xls
