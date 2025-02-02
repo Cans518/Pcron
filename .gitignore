@@ -125,3 +125,11 @@ __pycache__/
 *.state
 *.lock
 *.lck
+
+# Ignore log and temporary directories
+/logs/
+/logs/*
+/tmp/
+/tmp/*
+/var/log/
+/var/log/*
