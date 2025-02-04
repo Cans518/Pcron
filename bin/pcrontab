@@ -62,12 +62,12 @@ if [ "$name" == "root" ] && [ -z "$inputName" ]; then
     filename="$ROOT/etc/pcrontab"
     inputName="root"
 else
-    filename="$ROOT/etc/pcron/pcrontab/$inputName"
+    filename="$ROOT/etc/pcron/pcrontab$inputName"
 fi
 if [ ! -f "$filename" ]; then
     # Create from template
     echo "File $filename does not exist, creating from template"
-    cp $ROOT/etc/pcron/pcrontab.template "$filename"
+    cp "$ROOT/etc/pcrontab.template" "$filename"
 fi
 
 list_pcrontab() {

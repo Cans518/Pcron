@@ -22,7 +22,3 @@ SHELL=/bin/sh
 #
 
 0-3 1-5:9-11:20-30 * * * * echo "cmd1"; whoami
-
-[sots]
-2 * * * * * whoami
-*/2 * * * * * echo "cmd3"

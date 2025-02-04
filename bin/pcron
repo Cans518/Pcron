@@ -14,7 +14,9 @@ parse_pcrontab() {
     input_file="$1"
     username="$2"
     # Clean old scripts
+    set +f
     rm "$ROOT/etc/pcron/scripts/pcron_${username}_"*
+    set -f
     while true; do
         # Check if file exists
         if [ ! -f "$input_file" ]; then
@@ -190,7 +192,7 @@ EOF
 
 
         # Monitor input file for changes
-        inotifywait -e modify "$input_file"
+        inotifywait -q -e modify "$input_file"
         log "parser" "Re-parsing $input_file file"
         
     done
@@ -199,21 +201,20 @@ EOF
 # Thread 2: Create threads to run parsers
 # File to parse: 
 # 1. /etc/pcrontab - root
-# 2. /etc/pcron/pcrontab/<username> - user
+# 2. /etc/pcron/pcrontab<username> - user
 run_parsers() {
     parse_pcrontab "$ROOT/etc/pcrontab" root &
-    # Check if the directory exists and not empty
-    if [ -d "$ROOT/etc/pcron/pcrontab" ] && [ -n "$(ls -A "$ROOT/etc/pcron/pcrontab")" ]; then
-        for filename in "$ROOT/etc/pcron/pcrontab"/*; do
-            username=$(basename "$filename")
-            parse_pcrontab "$filename" "$username" &
-        done
-    fi
+    set +f
+    for filename in "$ROOT"/etc/pcron/pcrontab*; do
+        _basename=$(basename "$filename")
+        parse_pcrontab "$filename" "${_basename:8}" &
+    done
     while true; do
-        newfile=$(inotifywait -e create -q "$ROOT/etc/pcron/pcrontab" | awk '{print $1$3}')
+        newfile=$(inotifywait -e create --include "pcrontab*" -q "$ROOT/etc/pcron/" | awk '{print $1$3}')
         if test -n "$newfile"; then
             log "parser" "New file detected: $newfile"
-            parse_pcrontab "$newfile" "$(basename "$newfile")" &
+            _basename=$(basename "$newfile")
+            parse_pcrontab "$newfile" "${_basename:8}" &
         fi
     done
 }
