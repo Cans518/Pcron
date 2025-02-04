@@ -5,7 +5,9 @@ ROOT=""
 # Simple Shell Cron for systems without cron
 set -f
 #shellcheck source=../etc/pcron/func.sh
-source "$ROOT/etc/pcron/func.sh"
+#shellcheck disable=SC2086 
+#shellcheck disable=SC1091
+source $ROOT/etc/pcron/func.sh
 
 # Threads 1+: Listen for pcrontab changes and regenerate scripts
 parse_pcrontab() {
@@ -52,6 +54,7 @@ parse_pcrontab() {
                 continue
             fi
             # Parse seconds
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$seconds" 3)
             if [ "$retval" == "E" ]; then
                 # Invalid entry
@@ -65,6 +68,7 @@ parse_pcrontab() {
             fi
 
             # Parse minutes
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$minute" 59)
             if [ "$retval" == "E" ]; then
                 # Invalid entry
@@ -78,6 +82,7 @@ parse_pcrontab() {
             fi
 
             # Parse hours
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$hour" 23)
             if [ "$retval" == "E" ]; then
                 # Invalid entry
@@ -91,6 +96,7 @@ parse_pcrontab() {
             fi
 
             # Parse days
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$day" 31)
             if [ "$retval" == "E" ]; then
                 # Invalid entry
@@ -104,6 +110,7 @@ parse_pcrontab() {
             fi
 
             # Parse months
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$month" 12)
             if [ "$retval" == "E" ]; then
                 # Invalid entry
@@ -117,6 +124,7 @@ parse_pcrontab() {
             fi
 
             # Parse weekdays
+            #shellcheck disable=SC2086
             retval=$($ROOT/etc/pcron/parse-time.sh "$weekday" 6)
             if [ "${retval:0:1}" == "E" ]; then
                 # Invalid entry
