@@ -5,7 +5,7 @@ ROOT=""
 # Simple Shell Cron for systems without cron
 set -f
 #shellcheck source=../etc/pcron/func.sh
-source $ROOT/etc/pcron/func.sh
+source "$ROOT/etc/pcron/func.sh"
 
 # Threads 1+: Listen for pcrontab changes and regenerate scripts
 parse_pcrontab() {
@@ -148,22 +148,22 @@ EOF
             else
                 echo "command='sudo -u $username $command'" >> "$script_name"
             fi
-            if [ -n "$days_arr" ]; then
+            if [[ -v days_arr[@] && ${#days_arr[@]} -gt 0 ]]; then
                 echo "days=(" "${days_arr[@]}" ")" >> "$script_name"
             fi
-            if [ -n "$months_arr" ]; then
+            if [[ -v months_arr[@] && ${#months_arr[@]} -gt 0 ]]; then
                 echo "months=(" "${months_arr[@]}" ")" >> "$script_name"
             fi
-            if [ -n "$weekdays_arr" ]; then
+            if [[ -v weekdays_arr[@] && ${#weekdays_arr[@]} -gt 0 ]]; then
                 echo "weekdays=(" "${weekdays_arr[@]}" ")" >> "$script_name"
             fi
-            if [ -n "$hours_arr" ]; then
+            if [[ -v hours_arr[@] && ${#hours_arr[@]} -gt 0 ]];then
                 echo "hours=(" "${hours_arr[@]}" ")" >> "$script_name"
             fi
-            if [ -n "$minutes_arr" ]; then
+            if [[ -v minutes_arr[@] && ${#minutes_arr[@]} -gt 0 ]]; then
                 echo "minutes=(" "${minutes_arr[@]}" ")" >> "$script_name"
             fi
-            if [ -n "$seconds_arr" ]; then
+            if [[ -v seconds_arr[@] && ${#seconds_arr[@]} -gt 0 ]]; then
                 echo "seconds=(" "${seconds_arr[@]}" ")" >> "$script_name"
             fi
             # Script footer
