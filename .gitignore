@@ -132,3 +132,5 @@ __pycache__/
 /tmp/*
 /var/log/
 /var/log/*
+/etc/pcron/scripts/
+/etc/pcron/scripts/*
