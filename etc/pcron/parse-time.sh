@@ -15,7 +15,7 @@ if [ -z "$spaced_tm" ] || [ "${spaced_tm:0:1}" == " " ] ; then
     echo "E 1"
     exit 1
 fi
-_tm_input_arr=(${spaced_tm})
+_tm_input_arr=("${spaced_tm}")
 
 i=0
 len="${#_tm_input_arr[@]}"
