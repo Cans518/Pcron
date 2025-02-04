@@ -48,7 +48,7 @@ else
             # Extract separator and values
             sep="${_tm_input_arr[$i+2]}"
             # Generate values: 0*sep sep 2*sep ...
-            count=$(expr "$tm_max" / "$sep")
+            count=$(("$tm_max" / "$sep"))
             # Days and months are beginning from 1
             if [ "$tm_max" -eq 31 ] || [ "$tm_max" -eq 12 ]; then
                 base=1
