@@ -14,7 +14,8 @@ parse_pcrontab() {
     input_file="$1"
     username="$2"
     # Clean old scripts
-    rm "$ROOT/etc/pcron/scripts/pcron_${username}_"*
+    set +f
+    rm -f "$ROOT/etc/pcron/scripts/pcron_${username}_"*
     while true; do
         # Check if file exists
         if [ ! -f "$input_file" ]; then
@@ -26,6 +27,7 @@ parse_pcrontab() {
         pcron_script_count=0
         # Parse input file and generate scripts for each entry
         while IFS= read -r entry; do
+            set -f
             # Ignore comments and empty lines
             if [[ $entry == \#* ]] || [ -z "$entry" ]; then
                 continue
