@@ -1,0 +1,6 @@
+pcron (1.0.0) unstable; urgency=low
+
+  * Initial release.
+  * Contains pcron daemon, pcrontab executable, systemd service and configuration files.
+
+ -- Mzee <xiemaths@shu.edu.cn>  Thu, 09 Feb 2025 12:00:00 +0000

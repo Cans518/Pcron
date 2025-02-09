@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+systemctl stop pcron.service
+systemctl disable pcron.service
+systemctl daemon-reload
+rm -rf /var/lib/pcron
+
+exit 0
