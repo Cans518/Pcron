@@ -1,0 +1,31 @@
+#!/bin/bash
+# Install script for pcron
+
+set -e
+
+# Make directories and copy files
+mkdir -p /var/lib/pcron/scripts/
+if [ ! -f /etc/pcrontab ]; then
+    cp -f /usr/share/pcron/pcrontab.template /etc/pcrontab # Global
+    echo "Created a global pcrontab config in /etc/pcrontab with template"
+fi
+touch /var/log/pcron.log
+
+# Permissions
+# Executable
+chmod 755 /usr/bin/pcrontab
+chmod 755 /usr/lib/pcron/pcron /usr/lib/pcron/parse-time.sh /usr/lib/pcron/func.sh
+# Config
+chmod 644 /etc/pcrontab
+chmod 3777 /etc/pcron/ /var/lib/pcron/scripts/
+
+# Systemd
+systemctl daemon-reload
+systemctl enable --now pcron.service
+
+# Notes
+echo "To manage access of users: "
+echo "Create /etc/pcron.deny for blacklisting users - or -"
+echo "Create /etc/pcron.allow for whitelisting users"
+
+exit 0

@@ -132,5 +132,35 @@ __pycache__/
 /tmp/*
 /var/log/
 /var/log/*
-/etc/pcron/scripts/
-/etc/pcron/scripts/*
+/var/lib/pcron/scripts//
+/var/lib/pcron/scripts//*
+
+# Ignore Debian package build directories and files
+/debian/files
+/debian/*.debhelper.log
+/debian/*.substvars
+/debian/debhelper-build-stamp
+/debian/*.deb
+/debian/*.changes
+/debian/*.buildinfo
+/debian/*-stamp
+/debian/tmp/
+/debian/.debhelper/
+*.debhelper
+/debian/.debhelper/*
+
+# Ignore other temporary build files
+*.dsc
+*.build
+*.buildinfo
+*.changes
+*.upload
+*.orig.tar.gz
+*.debian.tar.gz
+*.debian.tar.xz
+*.debian.tar.bz2
+*.diff.gz
+*.diff.xz
+*.diff.bz2
+*.orig.tar.xz
+*.orig.tar.bz2

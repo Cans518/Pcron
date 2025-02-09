@@ -15,7 +15,7 @@ if [ -z "$spaced_tm" ] || [ "${spaced_tm:0:1}" == " " ] ; then
     echo "E 1"
     exit 1
 fi
-_tm_input_arr=("${spaced_tm}")
+IFS=" " read -r -a _tm_input_arr <<< "${spaced_tm}"
 
 i=0
 len="${#_tm_input_arr[@]}"
@@ -120,5 +120,12 @@ if [ "$tm_max" -eq 3 ]; then
         fi
     done
 fi
+
+# Remove duplicates
+declare -A arr
+for i in "${tm_arr[@]}"; do
+    arr["$i"]="$i"
+done
+tm_arr=("${arr[@]}")
 
 echo "${tm_arr[@]}"

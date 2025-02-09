@@ -1,0 +1,9 @@
+bin/pcrontab usr/bin/
+lib/pcron usr/lib/
+lib/pcron/func.sh usr/lib/pcron/
+lib/pcron/parse-time.sh usr/lib/pcron/
+
+etc/logrotate.d/pcron etc/logrotate.d/
+lib/systemd/system/pcron.service usr/lib/systemd/system/
+
+share/pcron/pcrontab.template usr/share/pcron/

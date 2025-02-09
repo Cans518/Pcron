@@ -1,0 +1,6 @@
+/usr/bin
+/usr/lib
+/etc/pcron
+/etc/logrotate.d
+/var/lib/pcron
+/var/log

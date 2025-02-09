@@ -1,0 +1,9 @@
+[Unit]
+Description=pcron daemon
+
+[Service]
+ExecStart=/usr/lib/pcron/pcron
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -67,7 +67,8 @@ fi
 if [ ! -f "$filename" ]; then
     # Create from template
     echo "File $filename does not exist, creating from template"
-    cp "$ROOT/etc/pcrontab.template" "$filename"
+    cp "$ROOT/usr/share/pcron/pcrontab.template" "$filename"
+    chmod 3664 "$filename" # By default umask = 0002 (other readable)
 fi
 
 list_pcrontab() {
