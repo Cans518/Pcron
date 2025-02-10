@@ -137,6 +137,7 @@ __pycache__/
 
 # Ignore Debian package build directories and files
 /debian/files
+/debian/pcron
 /debian/*.debhelper.log
 /debian/*.substvars
 /debian/debhelper-build-stamp
