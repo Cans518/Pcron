@@ -1,6 +1,34 @@
 #!/bin/bash
 ROOT=""
 
+RED='\033[0;31m'        # 红色
+GREEN='\033[0;32m'      # 绿色
+YELLOW='\033[0;33m'     # 黄色
+BLUE='\033[0;34m'       # 蓝色
+MAGENTA='\033[0;35m'    # 紫色
+CYAN='\033[0;36m'       # 青色
+RESET='\033[0m'         # 重置颜色
+
+print_error() {
+    echo -e "${RED}[ERROR] $1${RESET}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING] $1${RESET}"
+}
+
+print_info() {
+    echo -e "${BLUE}[MESSAGE] $1${RESET}"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS] $1${RESET}"
+}
+
+print_debug() {
+    echo -e "${MAGENTA}[DEBUG] $1${RESET}"
+}
+
 # Parse arguments
 while getopts ":u:lerh" opt; do
     case $opt in
@@ -33,12 +61,12 @@ done
 # Permisson verify
 name=$(/usr/bin/whoami)
 
-if [ "$name" != "root" ]; then
+if [ "$name" != "root" ] && [ "$task" != "help" ] ; then   
     if [ -z "$inputName" ]; then
-        echo "You must be root to run this script or specify a username by '-u'"
-        exit 1
-    elif [ "$name" != "$inputName" ]; then
-        echo "Username does not match"
+        print_info "Defaulting to current user: $name"
+        inputName="$name"
+    elif [ "$name" != "$inputName" ] && [ "$task" != "list" ]; then
+        print_error "Username does not match, you can't edit and remove it unless you are root"
         exit 1
     fi
 
@@ -46,33 +74,39 @@ if [ "$name" != "root" ]; then
     # Priority of whitelist > blacklist
     if [ -f /etc/pcron.allow ]; then
         if ! grep -q "$name" "$ROOT/etc/pcron.allow"; then
-            echo "User $name is not allowed to run pcrontab"
+            print_error "User $name is not allowed to run pcron, whatever you set is ignored"
             exit 1
         fi
     elif [ -f /etc/pcron.deny ]; then
         if grep -q "$name" "$ROOT/etc/pcron.deny"; then
-            echo "User $name is not allowed to run pcrontab"
+            print_error "User $name is baned to run pcron, whatever you set is ignored"
             exit 1
         fi
     fi
 fi
 
 # Select file
-if [ "$name" == "root" ] && [ -z "$inputName" ]; then
+if [ "$name" == "root" ] && [ -z "$inputName" ] && [ "$task" != "help" ]; then
     filename="$ROOT/etc/pcrontab"
     inputName="root"
 else
     filename="$ROOT/etc/pcron/pcrontab$inputName"
 fi
-if [ ! -f "$filename" ]; then
+if [ ! -f "$filename" ] && [ "$task" != "help" ]; then
     # Create from template
-    echo "File $filename does not exist, creating from template"
+    print_warning "File $filename does not exist, creating from template"
     cp "$ROOT/usr/share/pcron/pcrontab.template" "$filename"
     chmod 3664 "$filename" # By default umask = 0002 (other readable)
+    print_success "File $filename has been created and initialized"
 fi
 
 list_pcrontab() {
-    echo "List pcrontab of user $inputName:"
+    # if inputName is empty, list $name
+    if [ -z "$inputName" ]; then
+        inputName="$name"
+    fi
+
+    print_info "List pcrontab of user $inputName:"
     while IFS= read -r entry; do
         # Ignore comments, environment variables and empty lines
         if [[ $entry == \#* ]] || [[ $entry == [A-Z]* ]] || [ -z "$entry" ]; then
@@ -94,34 +128,93 @@ edit_pcrontab() {
     elif test -x /usr/bin/nano; then
         editor=/usr/bin/nano
     else
-        echo "No editor found"
-        echo "You can edit the file manually: $filename and it will be reloaded after saving automatically"
+        print_error "No editor found"
+        print_error "You can edit the file manually: $filename and it will be reloaded after saving automatically"
         exit 1
     fi
     $editor "$tempFile"
     # Replace if different
     if ! cmp -s "$tempFile" "$filename"; then
         cp "$tempFile" "$filename"
-        echo "File $filename has been updated"
+        print_success "File $filename has been updated"
     else
-        echo "File $filename has not been changed"
+        print_success "File $filename has not been changed"
     fi
     rm "$tempFile"
 }
 
 remove_pcrontab() {
-    echo "Remove pcrontab: $filename"
+    print_info "Remove pcrontab: $filename"
     rm "$filename"
+    print_success "File $filename has been removed"
 }
 
 help() {
-    echo "Usage: pcrontab <-u username> [-l | -e | -r]"
-    echo "Options:"
-    echo "  -u username  Specify username (or system-wide (root) if not set)"
-    echo "  -l           List pcrontab"
-    echo "  -e           Edit pcrontab"
-    echo "  -r           Remove pcrontab"
-    echo "  -h           Show this help message"
+    # Define colors
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[0;33m'
+    BLUE='\033[0;34m'
+    MAGENTA='\033[0;35m'
+    CYAN='\033[0;36m'
+    NC='\033[0m' # No Color
+
+    # Define border style
+    BORDER="================================================================================"
+
+    # Header
+    echo -e "${BLUE}$BORDER${NC}"
+    echo -e "${CYAN} pcrontab - User-level cron job manager - Course design ${NC}"
+    echo -e "${MAGENTA} Version: 1.0.1${NC}"
+    echo -e "${BLUE}$BORDER${NC}"
+    echo
+
+    # Usage
+    echo -e "${GREEN} Usage:${NC}"
+    echo -e "  pcrontab ${YELLOW}<-u username> [-l | -e | -r]${NC}"
+    echo
+
+    # Options
+    echo -e "${GREEN} Options:${NC}"
+    printf "  ${YELLOW}-u${NC} %-10s %s\n" "username" "Specify username (or system-wide (root) if not set)"
+    printf "  ${YELLOW}-l${NC} %-10s %s\n" "" "List pcrontab"
+    printf "  ${YELLOW}-e${NC} %-10s %s\n" "" "Edit pcrontab"
+    printf "  ${YELLOW}-r${NC} %-10s %s\n" "" "Remove pcrontab"
+    printf "  ${YELLOW}-h${NC} %-10s %s\n" "" "Show this help message"
+    echo
+
+    # Examples
+    echo -e "${GREEN} Examples:${NC}"
+    echo -e "  ${BLUE}List your pcrontab:${NC}"
+    echo -e "    ${YELLOW}pcrontab -l${NC}"
+    echo -e "  ${BLUE}Edit your pcrontab:${NC}"
+    echo -e "    ${YELLOW}pcrontab -e${NC}"
+    echo -e "  ${BLUE}Remove your pcrontab:${NC}"
+    echo -e "    ${YELLOW}pcrontab -r${NC}"
+    echo -e "  ${BLUE}List another user's pcrontab:${NC}"
+    echo -e "    ${YELLOW}pcrontab -u username -l${NC}"
+    echo -e "  ${RED}You can't remove or edit another user's pcrontab unless you are root${NC}" 
+    echo
+
+    # Notes
+    echo -e "${RED} Note:${NC}"
+    echo -e "  - You must be root to manage another user's pcrontab or specify the username with ${YELLOW}-u${NC}."
+    echo -e "  - The pcrontab file is located at ${YELLOW}/etc/pcron/pcrontab<username>${NC}."
+    echo
+
+    # Author's Message
+    echo -e "${CYAN} Author's Message:${NC}"
+    echo -e "  This script is designed to simplify the management of user-level cron jobs."
+    echo -e "  Use it to list, edit, or remove your pcrontab entries with ease."
+    echo -e "  For advanced configurations, refer to the official documentation."
+    echo -e "  This is also my course design for LO3 Operating System"
+    echo -e "  You can see all source code at https://github.com/Cans518/pcron"
+    echo
+
+    # Footer
+    echo -e "${BLUE}$BORDER${NC}"
+    echo -e "${CYAN}For more information, visit: https://github.com/Cans518/Pcron$ or you can see this in my blog https://mzee.top{NC}"
+    echo -e "${BLUE}$BORDER${NC}"
     exit 0
 }
 
