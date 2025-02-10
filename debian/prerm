@@ -5,5 +5,9 @@ systemctl stop pcron.service
 systemctl disable pcron.service
 systemctl daemon-reload
 rm -rf /var/lib/pcron
+rm -rf /etc/pcrontab
+rm -rf /etc/pcron.allow
+rm -rf /etc/pcron.deny
+rm -rf /var/log/pcron.log
 
 exit 0
