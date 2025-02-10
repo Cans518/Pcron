@@ -67,27 +67,27 @@ systemctl daemon-reload
 systemctl enable --now pcron.service
 print_success "pcron service has been enabled and started successfully."
 
-# Access control setup
-print_step "4. Setting up access control for pcron..."
-print_message "pcron allows you to control which users can schedule tasks."
-print_message "You can either blacklist or whitelist users using the following files:"
-echo -e "  - Blacklist users: ${BLUE}/etc/pcron.deny${NC}"
-echo -e "  - Whitelist users: ${BLUE}/etc/pcron.allow${NC}"
-touch /etc/pcron.allow /etc/pcron.deny
-chmod 644 /etc/pcron.allow /etc/pcron.deny
-export PCRON_ALLOW=/etc/pcron.allow 
-export PCRON_DENY=/etc/pcron.deny
-print_success "Access control files created at /etc/pcron.allow and /etc/pcron.deny."
-print_warning "NOTE: Only root can modify these files. Use the environment variables \$PCRON_ALLOW and \$PCRON_DENY to manage access."
-
 # Final notes
-print_step "5. Finalizing installation..."
+print_step "4. Finalizing installation..."
 print_success "pcron installation is complete!"
 print_message "Here are some additional notes for using pcron:"
 echo -e "  - To modify the global task schedule, edit ${BLUE}/etc/pcrontab${NC}."
 echo -e "  - Logs for pcron can be found at ${BLUE}/var/log/pcron.log${NC}."
 echo -e "  - Use ${BLUE}pcrontab -e${NC} to edit your personal cron jobs (if allowed)."
 print_message "If you encounter any issues, check the logs or review the access control settings."
+
+# Access control setup
+print_message "pcron allows you to control which users can schedule tasks."
+print_message "You can choose blacklist or whitelist users using the following files:"
+echo -e "  - Blacklist users: ${BLUE}/etc/pcron.deny${NC}"
+echo -e "  - Whitelist users: ${BLUE}/etc/pcron.allow${NC}"
+echo -e "  - If you want to use Blacklist or Whitelist, create these files by 'touch /etc/pcron.allow' or 'touch /etc/pcron.deny'."
+echo -e "  - And you must set the file as 644 permissions by 'chmod 644 /etc/pcron.allow' or '/etc/pcron.deny'"
+print_error "WARNING: You can only use one of them. If you use both, the access control will not work."
+echo -e "  - To apply the changes, run 'systemctl daemon-reload' and 'systemctl restart pcron.service'"
+echo -e "  - If you want to environment variables, you can set them by 'export PCRON_ALLOW=/etc/pcron.allow' or 'export PCRON_DENY=/etc/pcron.deny'."
+print_success "Access control files created at /etc/pcron.allow and /etc/pcron.deny."
+print_warning "NOTE: Only root can modify these files. Use the environment variables \$PCRON_ALLOW and \$PCRON_DENY to manage access."
 
 print_header "pcron installation finished successfully!"
 exit 0

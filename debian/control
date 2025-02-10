@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Mzee <xiemaths@shu.edu.cn>
 # if Ubuntu >= 22.04 remove depends on dh-systemd
 Build-Depends: debhelper (>= 10)
-Standards-Version: 1.0.1
+Standards-Version: 1.0.2
 Homepage: https://github.com/Cans518/pcron
 
 Package: pcron

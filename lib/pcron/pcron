@@ -33,7 +33,7 @@ parse_pcrontab() {
     fi
     
     # Clean old scripts
-    find "$ROOT/var/lib/pcron/scripts//" -name "pcron_${username}_*" -delete
+    find "$ROOT/var/lib/pcron/scripts/" -name "pcron_${username}_*" -delete
     while true; do
         # Check if file exists
         if [ ! -f "$input_file" ]; then
@@ -76,7 +76,7 @@ parse_pcrontab() {
             fi
             # Parse seconds
             retval=$("$ROOT/usr/lib/pcron/parse-time.sh" "$seconds" 3)
-            if [ "$retval" == "E" ]; then
+            if [  "${retval:0:1}" == "E" ]; then
                 # Invalid entry
                 log "parser" "Invalid entry: $entry"
                 continue
@@ -89,7 +89,7 @@ parse_pcrontab() {
 
             # Parse minutes
             retval=$("$ROOT/usr/lib/pcron/parse-time.sh" "$minute" 59)
-            if [ "$retval" == "E" ]; then
+            if [  "${retval:0:1}" == "E" ]; then
                 # Invalid entry
                 log "parser" "Invalid entry: $entry"
                 continue
@@ -102,7 +102,7 @@ parse_pcrontab() {
 
             # Parse hours
             retval=$("$ROOT/usr/lib/pcron/parse-time.sh" "$hour" 23)
-            if [ "$retval" == "E" ]; then
+            if [  "${retval:0:1}" == "E" ]; then
                 # Invalid entry
                 log "parser" "Invalid entry: $entry"
                 continue
@@ -115,7 +115,7 @@ parse_pcrontab() {
 
             # Parse days
             retval=$("$ROOT/usr/lib/pcron/parse-time.sh" "$day" 31)
-            if [ "$retval" == "E" ]; then
+            if [  "${retval:0:1}" == "E" ]; then
                 # Invalid entry
                 log "parser" "Invalid entry: $entry"
                 continue
@@ -128,7 +128,7 @@ parse_pcrontab() {
 
             # Parse months
             retval=$("$ROOT/usr/lib/pcron/parse-time.sh" "$month" 12)
-            if [ "$retval" == "E" ]; then
+            if [  "${retval:0:1}" == "E" ]; then
                 # Invalid entry
                 log "parser" "Invalid entry: $entry"
                 continue
@@ -153,7 +153,7 @@ parse_pcrontab() {
             fi
 
             # Generate script for entry
-            script_name=$ROOT/var/lib/pcron/scripts//"pcron_${username}_${pcron_script_count}"
+            script_name=$ROOT/var/lib/pcron/scripts/"pcron_${username}_${pcron_script_count}"
             # Script header
             cat > "$script_name" <<EOF
 #!/bin/bash

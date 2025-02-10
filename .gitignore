@@ -132,8 +132,8 @@ __pycache__/
 /tmp/*
 /var/log/
 /var/log/*
-/var/lib/pcron/scripts//
-/var/lib/pcron/scripts//*
+/var/lib/pcron/scripts/
+/var/lib/pcron/scripts/*
 
 # Ignore Debian package build directories and files
 /debian/files
