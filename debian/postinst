@@ -3,39 +3,91 @@
 
 set -e
 
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Function to display messages in a consistent format
+print_message() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+print_step() {
+    echo -e "${CYAN}[STEP]${NC} $1"
+}
+
+print_header() {
+    echo -e "${CYAN}========================================${NC}"
+    echo -e "${CYAN}$1${NC}"
+    echo -e "${CYAN}========================================${NC}"
+}
+
+# Start installation
+print_header "Starting pcron installation"
+
 # Make directories and copy files
+print_step "1. Creating necessary directories and copying files..."
 mkdir -p /var/lib/pcron/scripts/
 if [ ! -f /etc/pcrontab ]; then
     cp -f /usr/share/pcron/pcrontab.template /etc/pcrontab # Global
-    echo "Created a global pcrontab config in /etc/pcrontab with template"
+    print_success "Created a global pcrontab config in /etc/pcrontab using the provided template."
+else
+    print_warning "Skipping: /etc/pcrontab already exists. No changes were made."
 fi
 touch /var/log/pcron.log
+print_success "Log file created at /var/log/pcron.log for tracking pcron activities."
 
 # Permissions
-# Executable
+print_step "2. Setting permissions for executables and configuration files..."
 chmod 755 /usr/bin/pcrontab
 chmod 755 /usr/lib/pcron/pcron /usr/lib/pcron/parse-time.sh /usr/lib/pcron/func.sh
-# Config
 chmod 644 /etc/pcrontab
 chmod 3777 /etc/pcron/ /var/lib/pcron/scripts/
+print_success "Permissions successfully applied to ensure security and functionality."
 
-# Systemd
+# Systemd setup
+print_step "3. Configuring systemd to manage pcron service..."
 systemctl daemon-reload
 systemctl enable --now pcron.service
+print_success "pcron service has been enabled and started successfully."
 
-# Notes
-echo "To manage access of users: "
-echo "Create /etc/pcron.deny for blacklisting users - or -"
-echo "Create /etc/pcron.allow for whitelisting users"
-echo "Auto created /etc/pcron.allow and /etc/pcron.deny which is empty"
-# create /etc/pcron.allow and /etc/pcron.deny
+# Access control setup
+print_step "4. Setting up access control for pcron..."
+print_message "pcron allows you to control which users can schedule tasks."
+print_message "You can either blacklist or whitelist users using the following files:"
+echo -e "  - Blacklist users: ${BLUE}/etc/pcron.deny${NC}"
+echo -e "  - Whitelist users: ${BLUE}/etc/pcron.allow${NC}"
 touch /etc/pcron.allow /etc/pcron.deny
-# only root can write to these files
 chmod 644 /etc/pcron.allow /etc/pcron.deny
-# write $PCRON_ALLOW and $PCRON_DENY to /etc/pcron.allow and /etc/pcron.deny
 export PCRON_ALLOW=/etc/pcron.allow 
 export PCRON_DENY=/etc/pcron.deny
-echo "Now you can use \$PCRON_ALLOW and \$PCRON_DENY to whitelist and blacklist users"
+print_success "Access control files created at /etc/pcron.allow and /etc/pcron.deny."
+print_warning "NOTE: Only root can modify these files. Use the environment variables \$PCRON_ALLOW and \$PCRON_DENY to manage access."
 
+# Final notes
+print_step "5. Finalizing installation..."
+print_success "pcron installation is complete!"
+print_message "Here are some additional notes for using pcron:"
+echo -e "  - To modify the global task schedule, edit ${BLUE}/etc/pcrontab${NC}."
+echo -e "  - Logs for pcron can be found at ${BLUE}/var/log/pcron.log${NC}."
+echo -e "  - Use ${BLUE}pcrontab -e${NC} to edit your personal cron jobs (if allowed)."
+print_message "If you encounter any issues, check the logs or review the access control settings."
 
+print_header "pcron installation finished successfully!"
 exit 0
