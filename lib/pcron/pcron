@@ -24,6 +24,8 @@ parse_pcrontab() {
         # Check if file exists
         if [ ! -f "$input_file" ]; then
             log "parser" "File $input_file does not exist"
+            # Clean old scripts
+            find "$ROOT/var/lib/pcron/scripts/" -name "pcron_${username}_*" -delete
             exit 1
         fi
         pcrontab_env=()
