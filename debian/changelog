@@ -1,3 +1,11 @@
+pcron (1.0.1) unstable; urgency=low
+
+  * Fixed a bug in the systemd service file.
+  * Stricter file permission design to ensure security
+  * Beautified the command prompt interface and installation prompts
+
+ -- Mzee <xiemaths@shu.edu.cn>  Fri, 10 Feb 2025 15:20:00 +0000
+
 pcron (1.0.0) unstable; urgency=low
 
   * Initial release.

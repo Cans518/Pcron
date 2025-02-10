@@ -213,7 +213,7 @@ help() {
 
     # Footer
     echo -e "${BLUE}$BORDER${NC}"
-    echo -e "${CYAN}For more information, visit: https://github.com/Cans518/Pcron$ or you can see this in my blog https://mzee.top{NC}"
+    echo -e "${CYAN}For more information, visit: https://github.com/Cans518/Pcron \n or you can see this in my blog https://mzee.top${NC}"
     echo -e "${BLUE}$BORDER${NC}"
     exit 0
 }

@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Mzee <xiemaths@shu.edu.cn>
 Build-Depends: debhelper (>= 10), dh-systemd
-Standards-Version: 1.0.0
+Standards-Version: 1.0.1
 Homepage: https://github.com/Cans518/pcron
 
 Package: pcron
@@ -12,3 +12,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, systemd, inotify-tools
 Description: Simple cron replacement with systemd integration
  This package provides a lightweight cron alternative with systemd support.
  It includes executables and configuration files to easily schedule tasks.
+ ------------------------------------------------------------------------------------------
+ This is also my course project for LO03 Operating System(2024-2025 winter semester)
+ I am in Shanghai University and UTSEUS, major in Information Engineering. 
+ Romain in France, Xieyuhang in China, 22124754 is my student ID in Shanghai University.
+ If this protcol is useful to you, please give me a star. https://github.com/Cans518/pcron
+ ------------------------------------------------------------------------------------------
