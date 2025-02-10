@@ -17,6 +17,20 @@ parse_pcrontab() {
         log "parser" "User $username does not exist"
         exit 1
     fi
+
+    # Check if user in /etc/pcron.allow or /etc/pcron.deny
+    # Priority of whitelist > blacklist
+    if [ -f /etc/pcron.allow ]; then
+        if ! grep -q "$username" "$ROOT/etc/pcron.allow"; then
+            log "parser" "User $username is not allowed to run pcron"
+            exit 1
+        fi
+    elif [ -f /etc/pcron.deny ]; then
+        if grep -q "$username" "$ROOT/etc/pcron.deny"; then
+            log "parser" "User $username is not allowed to run pcron"
+            exit 1
+        fi
+    fi
     
     # Clean old scripts
     find "$ROOT/var/lib/pcron/scripts//" -name "pcron_${username}_*" -delete
