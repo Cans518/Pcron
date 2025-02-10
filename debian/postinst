@@ -35,7 +35,7 @@ chmod 644 /etc/pcron.allow /etc/pcron.deny
 # write $PCRON_ALLOW and $PCRON_DENY to /etc/pcron.allow and /etc/pcron.deny
 export PCRON_ALLOW=/etc/pcron.allow 
 export PCRON_DENY=/etc/pcron.deny
-echo "Now you can use $PCRON_ALLOW and $PCRON_DENY to whitelist and blacklist users"
+echo "Now you can use \$PCRON_ALLOW and \$PCRON_DENY to whitelist and blacklist users"
 
 
 exit 0
