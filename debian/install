@@ -1,4 +1,5 @@
 bin/pcrontab usr/bin/
+bin/pcron usr/bin/
 lib/pcron usr/lib/
 lib/pcron/func.sh usr/lib/pcron/
 lib/pcron/parse-time.sh usr/lib/pcron/

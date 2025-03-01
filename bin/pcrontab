@@ -165,7 +165,7 @@ help() {
     # Header
     echo -e "${BLUE}$BORDER${NC}"
     echo -e "${CYAN} pcrontab - User-level cron job manager - Course design ${NC}"
-    echo -e "${MAGENTA} Version: 1.0.1${NC}"
+    echo -e "${MAGENTA} Version: 1.1.0${NC}"
     echo -e "${BLUE}$BORDER${NC}"
     echo
 

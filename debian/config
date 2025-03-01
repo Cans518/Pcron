@@ -1,2 +1,3 @@
 # Config files installed to the system
 /etc/pcrontab
+/etc/pcron
