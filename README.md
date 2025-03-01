@@ -25,6 +25,8 @@ Ce projet est entièrement réalisé en utilisant **Shell** et exécuté avec **
 
 Le code source du projet est publié sur [GitHub](https://github.com/) sous licence **AGPL**. Les logiciels ainsi que les paquets d’installation sont également disponibles sur [Launchpad](https://launchpad.net/) pour la distribution et l’installation.
 
+**Note :** La branche 'fn' a été abandonnée et fusionnée dans la branche 'main'.
+
 ---
 
 # 项目 LO03 : Pcron
@@ -54,6 +56,8 @@ Le code source du projet est publié sur [GitHub](https://github.com/) sous lice
 
 该项目的源代码已发布在 [GitHub](https://github.com/) 上，采用 **AGPL** 许可证。软件以及安装包也可以在 [Launchpad](https://launchpad.net/) 上获取，方便分发和安装。
 
+**备注：** 'fn' 分支已经弃用，合并入 'main' 分支。
+
 ---
 
 # Project LO03: Pcron
@@ -82,3 +86,5 @@ This project is a course project for LO03, UTSEUS (equivalent to UTT LO14), name
 This project is entirely developed using **Shell** and executed with **bash**. It has been tested for functionality and performance on versions **Ubuntu 18.04, 20.04, 22.04, and 24.04**.
 
 The project’s source code is published on [GitHub](https://github.com/) under the **AGPL** license. The software and installation packages are also available on [Launchpad](https://launchpad.net/) for distribution and installation.
+
+**Note:** The 'fn' branch has been deprecated and merged into the 'main' branch.
