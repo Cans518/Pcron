@@ -59,7 +59,6 @@
 /build/
 /dist/
 /out/
-/bin/
 /pkg/
 
 # Ignore dependency directories

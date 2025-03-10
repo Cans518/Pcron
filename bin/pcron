@@ -1,0 +1,50 @@
+#!/bin/bash
+
+RED='\033[0;31m'        # 红色
+GREEN='\033[0;32m'      # 绿色
+YELLOW='\033[0;33m'     # 黄色
+BLUE='\033[0;34m'       # 蓝色
+MAGENTA='\033[0;35m'    # 紫色
+CYAN='\033[0;36m'       # 青色
+RESET='\033[0m'         # 重置颜色
+
+print_error() {
+    echo -e "${RED}[ERROR] $1${RESET}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING] $1${RESET}"
+}
+
+print_info() {
+    echo -e "${BLUE}[MESSAGE] $1${RESET}"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS] $1${RESET}"
+}
+
+print_debug() {
+    echo -e "${MAGENTA}[DEBUG] $1${RESET}"
+}
+
+# Permisson verify
+name=$(/usr/bin/whoami)
+
+if [ "$name" == "root" ]; then
+    # 输出pcron.service的pid,如果正在运行进行提示，如果没有运行则启动服务
+    print_info "Now root is running pcron"
+    print_success "pcron service is running  "
+else
+    if [ -f /etc/pcron.allow ]; then
+        if ! grep -q "$name" "$ROOT/etc/pcron.allow"; then
+            print_error "User $name is not allowed to run pcron, whatever you set is ignored"
+            exit 1
+        fi
+    elif [ -f /etc/pcron.deny ]; then
+        if grep -q "$name" "$ROOT/etc/pcron.deny"; then
+            print_error "User $name is baned to run pcron, whatever you set is ignored"
+            exit 1
+        fi
+    fi
+fi

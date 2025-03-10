@@ -86,6 +86,7 @@ echo -e "  - And you must set the file as 644 permissions by 'chmod 644 /etc/pcr
 echo -e "  - Now init the Whitelist Mode ……"
 touch /etc/pcron.allow
 chmod 644 /etc/pcron.allow
+export PCRON_ALLOW=/etc/pcron.allow
 print_success "Init Whitelist Mode successfully."
 print_warning "NOTE: You can only use one of them. If you use both, the access control will not work."
 echo -e "  - To apply the changes, run 'systemctl daemon-reload' and 'systemctl restart pcron.service'"
